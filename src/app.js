@@ -5,6 +5,7 @@
  */
 
 var UI = require('ui');
+var TimeAgo = require('timeago');
 var Vector2 = require('vector2');
 var Settings = require('settings');
 var ajax = require('ajax');
@@ -22,12 +23,43 @@ var main = new UI.Card({
 
 main.show();
 
+var showComments = function(data) {
+  var comments = "";
+  for (var i = 0; i < data.length; i++) {
+    console.log(data[i].data.text);
+    console.log(data[i].date);
+    var date = new Date(data[i].date);
+    comments += TimeAgo.asString(date);
+    comments += "\n";
+    comments += data[i].data.text;
+    comments += "\n\n";
+  }
+  var card = new UI.Card({title: 'Comments', body: comments, scrollable: true, style:'small'});
+  card.show();
+};
+
 var showCard = function(data) {
   var desc = data.desc;
   if (data.due !== null) {
     desc = data.due + "\n" + desc;
   }
   var card = new UI.Card({title: data.name, body: desc, scrollable: true, style:'small'});
+  card.on('click','select', function(e) {
+    var url = 'https://api.trello.com/1/card/'+data.id+'/actions?filter=commentCard&key=' + key + '&token=' + token;
+    console.log(url);
+    ajax(
+      {
+        url: url,
+        type: 'json'
+      },
+      function(data, status, request) {
+        showComments(data);
+      },
+      function(error, status, request) {
+        console.log('The ajax request failed: ' + error);
+      }
+    );
+  });
   card.show();
 };
 
