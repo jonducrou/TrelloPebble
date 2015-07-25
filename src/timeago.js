@@ -5,7 +5,7 @@ controller.asString = function (date) {
   if (Date.now() < date) {
     return "hasn't happened yet";
   }
-  var seconds = Math.Round((Date.now() - date.getTime())/1000);
+  var seconds = Math.round((Date.now() - date.getTime())/1000);
   console.log(seconds);
   if (seconds < 60){
     return seconds + " seconds ago";

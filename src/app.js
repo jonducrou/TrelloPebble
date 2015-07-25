@@ -34,7 +34,7 @@ var showComments = function(data) {
     comments += data[i].data.text;
     comments += "\n\n";
   }
-  var card = new UI.Card({title: 'Comments', body: comments, scrollable: true, style:'small'});
+  var card = new UI.Card({fullscreen: true, title: 'Comments', body: comments, scrollable: true, style:'small'});
   card.show();
 };
 
@@ -43,7 +43,7 @@ var showCard = function(data) {
   if (data.due !== null) {
     desc = data.due + "\n" + desc;
   }
-  var card = new UI.Card({title: data.name, body: desc, scrollable: true, style:'small'});
+  var card = new UI.Card({fullscreen: true, title: data.name, body: desc, scrollable: true, style:'small'});
   card.on('click','select', function(e) {
     var url = 'https://api.trello.com/1/card/'+data.id+'/actions?filter=commentCard&key=' + key + '&token=' + token;
     console.log(url);
@@ -74,6 +74,7 @@ var createMenuList = function(data, thing, nextThing, callback) {
   }
   var menu = new UI.Menu({
     //highlightBackgroundColor: data.backgroundColor,
+    fullscreen: true, 
     sections: [{
       items: items 
     }]
